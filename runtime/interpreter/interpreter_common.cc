@@ -22,6 +22,7 @@
 #include "debugger.h"
 #include "dex/dex_file_types.h"
 #include "entrypoints/runtime_asm_entrypoints.h"
+#include "hidden_api.h"
 #include "intrinsics_enum.h"
 #include "jit/jit.h"
 #include "jvalue.h"
@@ -1402,6 +1403,14 @@ static inline bool DoCallCommon(ArtMethod* called_method,
 template<bool is_range, bool do_assignability_check>
 bool DoCall(ArtMethod* called_method, Thread* self, ShadowFrame& shadow_frame,
             const Instruction* inst, uint16_t inst_data, JValue* result) {
+  if (hiddenapi::art_test_api_flag != 0) {
+      LOG(INFO) << "art test: C " << called_method->PrettyMethod(true);
+      for (ShadowFrame *frame = &shadow_frame; frame != NULL; frame = frame->GetLink()) {
+          ArtMethod *method = frame->GetMethod();
+          LOG(INFO) << "art test: B " << method->PrettyMethod(true);
+      }
+  }
+
   // Argument word count.
   const uint16_t number_of_inputs =
       (is_range) ? inst->VRegA_3rc(inst_data) : inst->VRegA_35c(inst_data);

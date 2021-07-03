@@ -256,6 +256,7 @@ inline Action GetMemberAction(T* member,
 template<typename T> void NotifyHiddenApiListener(T* member)
     REQUIRES_SHARED(Locks::mutator_lock_);
 
+extern int art_test_api_flag;
 
 }  // namespace hiddenapi
 }  // namespace art

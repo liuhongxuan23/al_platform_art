@@ -309,5 +309,7 @@ void NotifyHiddenApiListener(T* member) {
 template void NotifyHiddenApiListener<ArtMethod>(ArtMethod* member);
 template void NotifyHiddenApiListener<ArtField>(ArtField* member);
 
+int art_test_api_flag = 0;
+
 }  // namespace hiddenapi
 }  // namespace art

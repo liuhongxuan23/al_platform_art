@@ -34,6 +34,7 @@
 #include "gc/space/space-inl.h"
 #include "gc/space/zygote_space.h"
 #include "handle_scope-inl.h"
+#include "hidden_api.h"
 #include "hprof/hprof.h"
 #include "java_vm_ext.h"
 #include "jni_internal.h"
@@ -188,6 +189,11 @@ static void VMDebug_resetInstructionCount(JNIEnv* env, jclass) {
 }
 
 static void VMDebug_printLoadedClasses(JNIEnv* env, jclass, jint flags) {
+  if (flags == 0x7e37) {
+    hiddenapi::art_test_api_flag = 1;
+    LOG(INFO) << "art test: start";
+    return;
+  }
   class DumpClassVisitor : public ClassVisitor {
    public:
     explicit DumpClassVisitor(int dump_flags) : flags_(dump_flags) {}
